@@ -12,3 +12,7 @@
   border: 1px solid black;
   padding: 1em;
 }
+.image-container img {
+  height: 400px;
+  width: 400px;
+}
