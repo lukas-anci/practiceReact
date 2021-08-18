@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import './App.css';
+
 import Product from './components/Product';
 const cardInfo = [
   {
@@ -20,6 +21,7 @@ function App() {
   return (
     <div className="App container">
       <h1>Product</h1>
+
       <Product item={taskData} />
     </div>
   );

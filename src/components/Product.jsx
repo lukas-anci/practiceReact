@@ -1,26 +1,32 @@
 import Shoes from './picture.jpg';
 
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import Button from './Button';
+import Cart from './Cart';
 
 const ACTION = {
   INCREMENT: 'increment',
   DECREMENT: 'decrement',
+  TOTALPRICE: 'totalPrice',
 };
+
 const countReducer = (state, action) => {
   switch (action.type) {
     case ACTION.INCREMENT:
       return {
         count: state.count + 1,
         price: state.price,
-        totalPrice: state.price * state.count,
       };
     case ACTION.DECREMENT:
       return {
-        count: state.count - 1,
+        count: state.count <= 0 ? 0 : state.count - 1,
         price: state.price,
-        totalPrice: state.price * state.count,
       };
+    // case ACTION.TOTALPRICE:
+    //   return {
+    //     ...state,
+    //     totalPrice: state.price * state.count,
+    //   };
 
     default:
       break;
@@ -29,10 +35,14 @@ const countReducer = (state, action) => {
 
 const Product = ({ item }) => {
   const [state, dispatch] = useReducer(countReducer, {
-    count: 0,
+    count: 1,
     price: 16,
     totalPrice: 16,
   });
+  const [totalPrice, setTotalPrice] = useState(16);
+  useEffect(() => {
+    setTotalPrice(state.price * state.count);
+  }, [state]);
   const increment = () => {
     dispatch({ type: ACTION.INCREMENT });
   };
@@ -41,6 +51,7 @@ const Product = ({ item }) => {
   };
   return (
     <div className="d-flex">
+      <Cart count={state.count} />
       <div className="image-container">
         <img src={Shoes} alt="" />
       </div>
@@ -51,7 +62,7 @@ const Product = ({ item }) => {
             <p>{i.description}</p>
             <p>{i.priceRange}</p>
 
-            <p>{state.totalPrice} eur</p>
+            <p>{totalPrice} eur</p>
             <div className="btn-group">
               <button onClick={decrement}>-</button>
               <button>{state.count}</button>
